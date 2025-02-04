@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<definitions id="definitions" name="definitions" namespace="http://camunda.org/schema/1.0/dmn" xmlns="http://www.omg.org/spec/DMN/20151101/dmn.xsd">
+  <decision id="loyal_customer" name="loyal customer">
+    <informationRequirement>
+      <requiredInput href="#AnnualSales"/>
+    </informationRequirement>
+    <informationRequirement>
+      <requiredInput href="#Customeryears"/>
+    </informationRequirement>
+    <decisionTable id="DecisionTable_loyal_customer">
+      <input id="InputClause_AnnualSales" label="AnnualSales">
+        <inputExpression id="LiteralExpression_AnnualSales">
+          <text>AnnualSales</text>
+        </inputExpression>
+      </input>
+      <input id="InputClause_Customeryears" label="Customeryears">
+        <inputExpression id="LiteralExpression_Customeryears">
+          <text>Customeryears</text>
+        </inputExpression>
+      </input>
+      <output id="OutputClause_loyal_customer"/>
+      <rule id="rule-1">
+        <inputEntry id="inputEntry_1_0">
+          <text>'high'</text>
+        </inputEntry>
+        <inputEntry id="inputEntry_1_1">
+          <text>&gt;5</text>
+        </inputEntry>
+        <outputEntry id="outentry_1">
+          <text>"true"</text>
+        </outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+  <decision id="Prepayment" name="Prepayment">
+    <informationRequirement>
+      <requiredDecision href="#loyal_customer"/>
+    </informationRequirement>
+    <informationRequirement>
+      <requiredInput href="#OrderAmount"/>
+    </informationRequirement>
+    <decisionTable id="DecisionTable_Prepayment">
+      <input id="InputClause_loyal_customer" label="loyal customer">
+        <inputExpression id="LiteralExpression_loyal_customer">
+          <text>loyal customer</text>
+        </inputExpression>
+      </input>
+      <input id="InputClause_OrderAmount" label="OrderAmount">
+        <inputExpression id="LiteralExpression_OrderAmount">
+          <text>OrderAmount</text>
+        </inputExpression>
+      </input>
+      <output id="OutputClause_Prepayment"/>
+      <rule id="rule-2">
+        <inputEntry id="inputEntry_2_0">
+          <text>'true'</text>
+        </inputEntry>
+        <inputEntry id="inputEntry_2_1">
+          <text>'small'</text>
+        </inputEntry>
+        <outputEntry id="outentry_2">
+          <text>"not required"</text>
+        </outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+  <inputData id="AnnualSales" name="AnnualSales"/>
+  <inputData id="Customeryears" name="Customeryears"/>
+  <inputData id="OrderAmount" name="OrderAmount"/>
+</definitions>

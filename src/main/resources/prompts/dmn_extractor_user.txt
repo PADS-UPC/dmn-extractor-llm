@@ -1,0 +1,58 @@
+You are given a textual description, describing a set of decision rules. Your goal is to extract structured information that will be used to construct a DMN diagram from that information.
+
+A DMN diagram has two main elements, the requirements diagram and the decision tables.
+
+The requirements diagram specifies a high level overview of the decision process. It is structured as a tree, with input nodes and decision nodes:
+
+- input node: represents a piece of data that is provided as input to the decision process. It has a name and a type.
+- decision node: represents a decision that is made in the decision process. decisions are sometimes also used to represent intermediate computations in the data flow. It can take as inputs any number of input nodes or other decision nodes. Each decision node has a name and an output type.
+
+input nodes and decision nodes are connected to each other via edges, which represent the flow of data between them.
+
+For each decision in the requirements diagram, there is a corresponding decision table that specifies the rules for that decision. A decision table consists of a set of rules. Each rule specifies:
+
+- conditions: Each condition applies to a certain input. For string types, conditions can check for equality, for example userType == "premium". For numbers, other than equality, a condition can also check for inclusion within a range, e.g. userAge in [18..35]
+- decision: The output value this decision node should take if all the conditions for this rule evaluate to true.
+
+The results have to be provided in JSON form, following this structure:
+
+{
+    "requirementsDiagram": {
+        "inputNodes": [{"name": "descriptive unique name", "type": "string|number"}, ...]
+        "decisionNodes": [
+            {
+                "name": "descriptive unique name",
+                "outputType": "string|number",
+                "inputs": ["someInputNode", "someDecisionNode", ...]
+            }, 
+            ...
+        ]
+    },
+    "decisionTables": [
+        {
+            "decisionNodeName": "someDecisionNode",
+            "rules": [
+                {
+                    "conditions": [
+                        {"data": "someInputNode", "operator": "eq", "value": "someValue"},
+                        {"data": "someInputNode", "operator": "inRange", "from": 123, "to": 456},
+                        ...
+                    ]
+                    "decision": "someValue", // Could be a number too
+                }
+            ]
+        }
+    ]
+}
+
+Keep in mind that: 
+
+- Every decision node in the requirements diagram should have an associated decision table
+- Input node and decision node names must use human readable labels, closely matching the terms in the input text
+- When referencing data in rule conditions, the name must be the same as one of the elements of the requirements diagram
+- Extract only the rules that are in the text. Do not add additional rules to the decision tables.
+- When specifying numeric ranges, an open range can be specified by either omitting the "from" or the "to" field.
+
+Here is the provided text:
+
+{{USER_TEXT}}

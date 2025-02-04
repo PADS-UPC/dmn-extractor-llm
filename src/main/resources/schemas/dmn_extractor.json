@@ -1,0 +1,75 @@
+{
+    "name": "dmn_extractor",
+    "schema": {
+        "type": "object",
+        "properties": {
+            "requirementsDiagram": {
+                "type": "object",
+                "properties": {
+                    "inputNodes": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "name": { "type": "string" },
+                                "type": { "type": "string", "enum": ["string","number"] }
+                            },
+                            "required": ["name","type"]
+                        }
+                    },
+                    "decisionNodes": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "name": { "type": "string" },
+                                "outputType": { "type": "string", "enum": ["string","number"] },
+                                "inputs": {
+                                    "type": "array",
+                                    "items": { "type": "string" }
+                                }
+                            },
+                            "required": ["name","outputType","inputs"]
+                        }
+                    }
+                },
+                "required": ["inputNodes","decisionNodes"]
+            },
+            "decisionTables": {
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "properties": {
+                        "decisionNodeName": { "type": "string" },
+                        "rules": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "conditions": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "object",
+                                            "properties": {
+                                                "data": { "type": "string" },
+                                                "operator": { "type": "string", "enum": ["eq","inRange"] },
+                                                "value": { "type": ["string","number"] },
+                                                "from": { "type": "number" },
+                                                "to": { "type": "number" }
+                                            },
+                                            "required": ["data","operator"]
+                                        }
+                                    },
+                                    "decision": { "type": ["string","number"] }
+                                },
+                                "required": ["conditions","decision"]
+                            }
+                        }
+                    },
+                    "required": ["decisionNodeName","rules"]
+                }
+            }
+        },
+        "required": ["requirementsDiagram","decisionTables"]
+    }
+}
